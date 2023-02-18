@@ -6,8 +6,9 @@ import * as faceapi from '@vladmandic/face-api'
 import { randomUUID } from 'crypto'
 import logger from './helpers/logger'
 import { processDetection } from './processDetection'
+import axios from 'axios'
 
-const modelPathRoot = '../weights'
+const modelPathRoot = path.resolve(process.cwd() + '/weights')
 const minConfidence = 0.15
 const maxResults = 5
 
@@ -37,7 +38,7 @@ export async function faceDetect(imagePath: string | Buffer) {
   )
 
   logger.info('Loading FaceAPI models')
-  const modelPath = path.join(__dirname, modelPathRoot)
+  const modelPath = modelPathRoot
   await faceapi.nets.ssdMobilenetv1.loadFromDisk(modelPath)
   await faceapi.nets.ageGenderNet.loadFromDisk(modelPath)
   await faceapi.nets.faceLandmark68Net.loadFromDisk(modelPath)
@@ -68,6 +69,12 @@ const processInput = async (input: string | Buffer): Promise<Buffer> => {
   }
   if (input instanceof Buffer) {
     return input
+  }
+  // check if string is url
+  if (input.startsWith('http')) {
+    // read from url
+    const response = await axios.get(input, { responseType: 'arraybuffer' })
+    return Buffer.from(response.data, 'binary')
   }
   const inFile = await fsPromises.readFile(input)
   return inFile

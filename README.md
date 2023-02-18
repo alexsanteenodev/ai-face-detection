@@ -10,7 +10,13 @@ npm install
 ```
 import { detectFaces } from 'ai-face-detection'
 
-faceDetect('./face/face1.jpeg')
+// using remote image
+const imageFromUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Elon_Musk_Royal_Society.jpg/640px-Elon_Musk_Royal_Society.jpg'
+
+// using local image
+const imageFromFile = './face/face1.jpeg'
+
+faceDetect(imageFromUrl)
   .then((result) => {
         console.log(
         `Face detected gender: ${result?.gender} with probability ${result?.genderProbability}`
