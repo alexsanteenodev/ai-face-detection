@@ -1,6 +1,6 @@
 {
   "name": "ai-face-detection",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -15,7 +15,7 @@
     "eslint:fix": "eslint -c .eslintrc.json --fix src/**/*.{ts,js}",
     "test:unit": "jest -c jest.unit.config.js --maxWorkers=20%",
     "release": "npm run build && standard-version",
-    "release:publish": "npm run release && git push --follow-tags origin main && npm publish"
+    "release:publish": "git add . && npm run release && git push --follow-tags origin main && npm publish"
   },
   "repository": {
     "type": "git",
